@@ -4,7 +4,7 @@
 <meta name="description" content="" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>mac.un</title>
-<link rel="shortcut icon" href="https://iyim.github.io//favicon.ico?v=1558662952846">
+<link rel="shortcut icon" href="https://iyim.github.io//favicon.ico?v=1558673758733">
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
 <link rel="stylesheet" href="https://iyim.github.io//styles/main.css">
 
@@ -18,7 +18,7 @@
       <div class="main-content">
         <div class="site-header">
   <a href="https://iyim.github.io/">
-  <img class="avatar" src="https://iyim.github.io//images/avatar.png?v=1558662952846" alt="">
+  <img class="avatar" src="https://iyim.github.io//images/avatar.png?v=1558673758733" alt="">
   </a>
   <h1 class="site-title">
     mac.un
@@ -72,21 +72,35 @@
         <div class="post-container">
   
     <article class="post">
-      <a href="https://iyim.github.io//post/ce-shi-wen-zhang">
-        <h2 class="post-title">测试文章</h2>
+      <a href="https://iyim.github.io//post/python-dai-ma-pian-duan">
+        <h2 class="post-title">Python代码片段</h2>
       </a>
       <div class="post-info">
         <time class="post-time">
-          · 2019-05-23 ·
+          · 2019-05-24 ·
         </time>
+        
+          <a href="https://iyim.github.io//tag/python" class="post-tag">
+            # python
+          </a>
         
       </div>
       
-        <a href="https://iyim.github.io//post/ce-shi-wen-zhang" class="post-feature-image" style="background-image: url('https://iyim.github.io//post-images/ce-shi-wen-zhang.jpg')">
-        </a>
-      
       <div class="post-abstract">
-        
+        <h3 id="通过win32-api-获取剪切板内容或设置">通过win32 API 获取剪切板内容或设置</h3>
+<pre><code class="language-python">#coding=utf-8
+#This's a sample of operate the clipboard
+
+import win32clipboard as wincb
+import win32con
+ 
+wincb.OpenClipboard()
+wincb.EmptyClipboard()
+wincb.SetClipboardData(win32con.CF_TEXT, &quot;Hello World!&quot;)  #复制文本内容到剪贴板，系统后台会返回内存地址
+print wincb.GetClipboardData(win32con.CF_TEXT)  #'Hello World!'
+wincb.CloseClipboard()
+</code></pre>
+
       </di>
     </article>
   

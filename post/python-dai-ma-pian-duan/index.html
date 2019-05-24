@@ -1,0 +1,204 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="description" content="" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Python代码片段 | mac.un</title>
+<link rel="shortcut icon" href="https://iyim.github.io//favicon.ico?v=1558673758733">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="stylesheet" href="https://iyim.github.io//styles/main.css">
+
+<script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+<script src="https://cdn.bootcss.com/moment.js/2.23.0/moment.min.js"></script>
+
+
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://iyim.github.io/">
+  <img class="avatar" src="https://iyim.github.io//images/avatar.png?v=1558673758733" alt="">
+  </a>
+  <h1 class="site-title">
+    mac.un
+  </h1>
+  <p class="site-description">
+    
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+      
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              Python代码片段
+            </h2>
+            <div class="post-info">
+              <time class="post-time">
+                · 2019-05-24 ·
+              </time>
+              
+                <a href="https://iyim.github.io//tag/python" class="post-tags">
+                  # python
+                </a>
+              
+            </div>
+            
+            <div class="post-content">
+              <h3 id="通过win32-api-获取剪切板内容或设置">通过win32 API 获取剪切板内容或设置</h3>
+<pre><code class="language-python">#coding=utf-8
+#This's a sample of operate the clipboard
+
+import win32clipboard as wincb
+import win32con
+ 
+wincb.OpenClipboard()
+wincb.EmptyClipboard()
+wincb.SetClipboardData(win32con.CF_TEXT, &quot;Hello World!&quot;)  #复制文本内容到剪贴板，系统后台会返回内存地址
+print wincb.GetClipboardData(win32con.CF_TEXT)  #'Hello World!'
+wincb.CloseClipboard()
+</code></pre>
+<!-- more -->
+<h3 id="通过命令行方式设置剪切板内容通过tkinter获取剪切板内容python3">通过命令行方式设置剪切板内容，通过tkinter获取剪切板内容(Python3)</h3>
+<pre><code class="language-python">###向剪贴板写入系统时间
+
+import os
+def addToClipBoard(text):
+	command = 'echo ' + text.strip() + '| clip'
+	os.system(command)
+
+import time
+timestr = time.strftime(&quot;%Y-%m-%d %H:%M:%S&quot;,time.localtime(time.time()))
+addToClipBoard(timestr)
+###读取剪贴板内容
+
+from tkinter import Tk
+r = Tk()
+
+# read the clipboard
+c = r.clipboard_get()
+print(c)
+</code></pre>
+<h3 id="python调用windows系统通知栏">python调用windows系统通知栏</h3>
+<pre><code class="language-python"># coding=utf-8
+import win32gui  
+import win32con  
+import time  
+  
+class TestTaskbarIcon:
+    def __init__(self):  
+          
+        # 注册一个窗口类  
+        wc = win32gui.WNDCLASS()  
+        hinst = wc.hInstance = win32gui.GetModuleHandle(None)  
+        wc.lpszClassName = &quot;PythonTaskbarDemo&quot;  
+        wc.lpfnWndProc = {win32con.WM_DESTROY: self.OnDestroy,}  
+        classAtom = win32gui.RegisterClass(wc)  
+        style = win32con.WS_OVERLAPPED | win32con.WS_SYSMENU  
+        self.hwnd = win32gui.CreateWindow( classAtom, &quot;Taskbar Demo&quot;, style,  
+                0, 0, win32con.CW_USEDEFAULT, win32con.CW_USEDEFAULT,  
+                0, 0, hinst, None)  
+        hicon = win32gui.LoadIcon(0, win32con.IDI_APPLICATION)  
+        nid = (self.hwnd, 0, win32gui.NIF_ICON, win32con.WM_USER+20, hicon, &quot;Demo&quot;)  
+        win32gui.Shell_NotifyIcon(win32gui.NIM_ADD, nid)  
+  
+    def showMsg(self, title, msg):
+        # 原作者使用Shell_NotifyIconA方法代替包装后的Shell_NotifyIcon方法  
+        # 据称是不能win32gui structure, 我稀里糊涂搞出来了.  
+        # 具体对比原代码.  
+        nid = (self.hwnd, # 句柄  
+                0, # 托盘图标ID  
+                win32gui.NIF_INFO, # 标识  
+                0, # 回调消息ID  
+                0, # 托盘图标句柄  
+                &quot;TestMessage&quot;, # 图标字符串  
+                msg, # 气球提示字符串  
+                0, # 提示的显示时间  
+                title, # 提示标题  
+                win32gui.NIIF_INFO # 提示用到的图标  
+                )  
+        win32gui.Shell_NotifyIcon(win32gui.NIM_MODIFY, nid)  
+  
+    def OnDestroy(self, hwnd, msg, wparam, lparam):  
+        nid = (self.hwnd, 0)  
+        win32gui.Shell_NotifyIcon(win32gui.NIM_DELETE, nid)  
+        win32gui.PostQuitMessage(0) # Terminate the app.  
+          
+  
+if __name__ == '__main__':  
+    t = TestTaskbarIcon()  
+    t.showMsg(u&quot;出来吧!&quot;, u&quot;奥特曼!&quot;)
+    time.sleep(5)  
+    win32gui.DestroyWindow(t.hwnd)
+</code></pre>
+
+            </div>
+          </article>
+        </div>
+    
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://iyim.github.io//post/hello-gridea">
+              <h3 class="post-title">
+                Hello Gridea
+              </h3>
+            </a>
+          </div>  
+        
+
+        
+    
+        <div class="site-footer">
+  
+</div>
+
+<script>
+  hljs.initHighlightingOnLoad()
+</script>
+
+      </div>
+    </div>
+  </body>
+</html>
